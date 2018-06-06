@@ -20,5 +20,35 @@
   "author": {
     "name": "Jonathan Stevens",
     "email": "jonathanjstevens@gmail.com"
-  }
+  },
+  "drivers": [
+    {
+      "id": "particle",
+      "name": {
+        "en": "particle"
+      },
+      "class": "other",
+      "capabilities": [],
+      "images": {
+        "large": "/drivers/particle/assets/images/large.png",
+        "small": "/drivers/particle/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_my_devices"
+          },
+          "options": {
+            "singular": true
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    }
+  ]
 }
