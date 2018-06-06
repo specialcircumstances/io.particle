@@ -1,0 +1,15 @@
+{
+  "name": "io.particle",
+  "version": "1.0.0",
+  "description": "Athom Homey integration with Particle IoT",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Special Circumstances",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "moment": "^2.22.1",
+    "particle-api-js": "^7.2.0"
+  }
+}

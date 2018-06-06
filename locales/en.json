@@ -1,0 +1,21 @@
+{
+	"settings":{
+		"title": "Particle IoT Settings",
+		"intro": "To let Homey connect with Particle Cloud please provide credentials to login, credentials will not be stored but an access Token will be created and stored.",
+		"homeywebhook": "We need to setup Cloud Integration on the Particle platform. This will be called Homey. If you are happy to do this click Integrate Particle Cloud.",
+		"webhookID": "Athom Webhook ID",
+		"webhookSecret": "Athom Webhook Secret",
+		"havetoken": "This Homey has a token for Particle Cloud, as shown below.",
+    "username": "Username",
+    "password": "Password",
+		"headerToken": "Token",
+		"headerTokenType": "Token Type",
+		"headerExpiry": "Token Expires",
+		"authorise": "Connect to Particle Cloud",
+		"revoke": "Disconnect Particle Cloud",
+		"authorise_error": "Something went wrong, please try again."
+	},
+	"general": {
+		"major_update_notification": "This app is current experimental."
+	}
+}

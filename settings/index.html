@@ -1,0 +1,160 @@
+<!doctype html>
+<html>
+    <head>
+
+        <!-- The '/homey.js' script must be included in your settings view to work -->
+        <script type="text/javascript" src="/homey.js" data-origin="settings"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.7.0/moment.min.js" type="text/javascript"></script>
+
+    </head>
+    <body>
+
+        <h1 data-i18n="settings.title"></h1>
+
+
+        <div id="pcloudcreds">
+          <p data-i18n="settings.intro"></p>
+          <fieldset>
+              <legend>Particle Cloud Credentials</legend>
+
+              <div class="field row">
+                  <label for="username" data-i18n="settings.username"></label>
+                  <input id="username" type="text" value="" />
+              </div>
+              <div class="field row">
+                  <label for="password" data-i18n="settings.password"></label>
+                  <input id="password" type="password" value="" />
+              </div>
+          </fieldset>
+
+          <button id="save" class="right">Get Token</button>
+
+        </div>
+
+        <div id='tokentable'>
+          <p data-i18n="settings.havetoken"></p>
+          <table style="width:100%">
+           <tr>
+             <th data-i18n="settings.headerToken"></th>
+             <th data-i18n="settings.headerTokenType"></th>
+             <th data-i18n="settings.headerExpiry"></th>
+           </tr>
+           <tr>
+             <td id="token"></td>
+             <td id="tokentype"></td>
+             <td id="expiry"></td>
+           </tr>
+          </table>
+
+          <button id="revoke" class="right">Revoke Token</button>
+
+        </div>
+
+        <hr>
+
+        <div id=homeywebhookinfo>
+          <p data-i18n="settings.homeywebhook"></p>
+
+          <button id="integrate" class="right">Integrate Particle Cloud</button>
+
+        </div>
+
+        <script type="text/javascript">
+
+        // a method named 'onHomeyReady' must be present in your code
+        function onHomeyReady( Homey ){
+
+            // Tell Homey we're ready to be displayed
+
+            var saveElement = document.getElementById('save');
+            var revokeElement = document.getElementById('revoke');
+            var integrateElement = document.getElementById('integrate');
+
+
+            saveElement.addEventListener('click', function(e) {
+
+              var usernameElement = document.getElementById('username');
+              var passwordElement = document.getElementById('password');
+
+              var apiuri='/authorise?username='+usernameElement.value+"&password="+passwordElement.value;
+              Homey.api('GET', apiuri, function( err, result ) {
+                 if( err ) return Homey.alert(err);
+                 displayToken( Homey );
+              });
+            });
+
+            revokeElement.addEventListener('click', function(e) {
+
+              var apiuri='/deauthorise';
+              Homey.api('GET', apiuri, function( err, result ) {
+                 displayToken( Homey );
+                 if( err ) return Homey.alert(err);
+               });
+            });
+
+            integrateElement.addEventListener('click', function(e) {
+
+              var apiuri='/integrate';
+              Homey.api('GET', apiuri, function( err, result ) {
+                 displayToken( Homey );
+                 if( err ) return Homey.alert(err);
+               });
+            });
+
+              //Homey.set('username', usernameElement.value, function( err ){
+              //    if( err ) return Homey.alert( err );
+              //});
+              //Homey.set('password', passwordElement.value, function( err ){
+              //    if( err ) return Homey.alert( err );
+              //});
+
+
+
+            displayToken( Homey );
+            Homey.ready();
+
+          }
+
+        function displayToken( Homey ) {
+            // display the token, if it exists
+            var tokenElement = document.getElementById('token');
+            var tokenTypeElement = document.getElementById('tokentype');
+            var tokenExpiryElement = document.getElementById('expiry');
+            var credentialsElement = document.getElementById('pcloudcreds');
+            var tokentableElement = document.getElementById('tokentable');
+
+            Homey.get('authorised', function (err, result) {
+                if( err ) return Homey.alert( err );
+                if(result==true) {
+                  //Authorised already so don't show credentials
+                  credentialsElement.style.display = 'none';
+                  // show token details.
+                  tokentableElement.style.display = 'block';
+                  Homey.get('accessToken', function( err, token ) {
+                     if( err ) return Homey.alert( err );
+                     tokenElement.innerHTML = token;
+                  });
+
+                  Homey.get('accessTokenType', function( err, tokentype ) {
+                     if( err ) return Homey.alert( err );
+                     tokenTypeElement.innerHTML = tokentype;
+                  });
+
+                  Homey.get('accessTokenExpires', function( err, tokenexpiry ) {
+                     if( err ) return Homey.alert( err );
+                     var expdate = moment(tokenexpiry).format("HH:mm Do MMM YYYY");
+                     tokenExpiryElement.innerHTML = expdate;
+                  });
+                } else {
+                  // Show credentials and hide token info
+                  credentialsElement.style.display = 'block';
+                  tokentableElement.style.display = 'none';
+                }
+            });
+
+        }
+
+        </script>
+
+    </body>
+</html>
