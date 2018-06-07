@@ -35,18 +35,16 @@
       },
       "pair": [
         {
-          "id": "list_devices",
-          "template": "list_devices",
+          "id": "list_particle_devices",
           "navigation": {
-            "next": "add_my_devices"
+            "next": "add_particle_device"
           },
           "options": {
             "singular": true
           }
         },
         {
-          "id": "add_devices",
-          "template": "add_devices"
+          "id": "add_particle_device"
         }
       ]
     }

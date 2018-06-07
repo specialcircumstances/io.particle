@@ -79,10 +79,10 @@ class ParticleIoT extends Homey.App {
 
 	webhookreceiver(args){
 		// method to receive messages from webhook
-		this.log('Got a webhook message!');
-		this.log('headers:', args.headers);
-		this.log('query:', args.query);
-		this.log('body:', args.body);
+		//this.log('Got a webhook message!');
+		//this.log('headers:', args.headers);
+		//this.log('query:', args.query);
+		//this.log('body:', args.body);
 		// Check if it's a test message
 		/*
 		if (args.body.coreid = 'api') {

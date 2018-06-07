@@ -20,15 +20,88 @@ class ParticleDriver extends Homey.Driver {
 		this.log('ParticleDriver has been inited');
 	}
 
+
+	/*
+			Pairing
+
+	*/
+	onPair( socket ) {
+
+		socket.on('start', function( data, callback) {
+			this.log("onPair on.start called");
+		})
+
+
+		// List devices
+		socket.on('list_devices', ( data, callback ) => {
+			var accessToken = Homey.ManagerSettings.get('accessToken');
+			var particle = new Particle();
+			var self=this;
+			var devicesout = [];
+			// Ask  Particle Cloud for a list of devices (returns a Promise)
+			/* { body: [ { id: '410025000847343232363230',
+	       name: 'homey_dev',
+	       last_app: null,
+	       last_ip_address: '86.145.169.186',
+	       last_heard: '2018-06-06T18:20:33.465Z',
+	       product_id: 6,
+	       connected: true,
+	       platform_id: 6,
+	       cellular: false,
+	       notes: null,
+	       status: 'normal',
+	       current_build_target: '0.7.0',
+	       system_firmware_version: '0.7.0',
+	       default_build_target: '0.7.0' }, { etc } ] }
+			*/
+			/// var devicesPr = particle.listDevices({ auth: accessToken });
+			return particle.listDevices({ auth: accessToken })
+				.then( devices => {
+			    //self.log('Devices: ', devices);
+					devices.body.forEach((device) => {
+						// Returns a list of online and nominal particle devices.
+						// Check other things on actual pairing?
+						if (device.connected == true && device.status == 'normal') {
+							devicesout.push({
+								'name' : device.name,
+								'data' : { 'id' : device.id }
+							});
+						}
+					});
+					callback( null, devicesout );
+			  })
+				.catch( err => {
+			    self.log('List devices call failed: ', err);
+					this.error(err);
+					socket.emit('error', err.message || err.toString());
+					callback( err, null);
+			  })
+		}); 	// End of socket.on list_devices
+
+
+		// Add devices
+		socket.on('add_device', (data, callback) => {
+			this.log("add device called");
+			this.log(data);
+			callback( null , "Add Device Called" );
+		});	// End of Add Devices
+
+
+	} // End of onPair (socket) {}
+
+
+
+
 	// this is the easiest method to overwrite, when only the
 	// template 'Drivers-Pairing-System-Views' is being used.
+	/*
   onPairListDevices( data, callback ) {
 		// Setup a few bits
 		var accessToken = Homey.ManagerSettings.get('accessToken');
 		var particle = new Particle();
 		var self=this;
 		var devicesout = []
-
+	*/
 		// Ask  Particle Cloud for a list of devices (returns a Promise)
 		/* { body: [ { id: '410025000847343232363230',
        name: 'homey_dev',
@@ -45,6 +118,7 @@ class ParticleDriver extends Homey.Driver {
        system_firmware_version: '0.7.0',
        default_build_target: '0.7.0' }, { etc } ] }
 		*/
+		/*
 		var devicesPr = particle.listDevices({ auth: accessToken });
 		devicesPr.then(
 		  function(devices){
@@ -66,7 +140,7 @@ class ParticleDriver extends Homey.Driver {
 				callback( err, null);
 		  }
 		);
-
+		*/
 
 		// Get detailed info on the devices
 		/*
@@ -134,7 +208,8 @@ class ParticleDriver extends Homey.Driver {
 			*/
       //callback( null, devices );
 
-  }	 // End of PairListDevices
+  //}	 // End of PairListDevices
+
 
 }  // End of ParticleDriver
 

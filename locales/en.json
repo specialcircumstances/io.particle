@@ -15,6 +15,10 @@
 		"revoke": "Disconnect Particle Cloud",
 		"authorise_error": "Something went wrong, please try again."
 	},
+	"pair": {
+		"title_query": "Querying Particle device...",
+		"text_query": "Please wait while the particle device is queried for it's configuration"
+	},
 	"general": {
 		"major_update_notification": "This app is current experimental."
 	}

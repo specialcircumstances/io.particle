@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+    <head>
+
+    </head>
+    <body>
+
+        <p data-i18n="pair.text_query"></p>
+
+        <i id="particle-query-running" class="loading fa fa-cog fa-spin"></i>
+
+    </body>
+
+    <script type="text/javascript">
+
+      Homey.setTitle( Homey.__("pair.title_query") );
+
+      Homey.emit( 'add_device', { data: "nothing" }, function( err, result ){
+        if( err ) return Homey.alert(err);
+        console.log(result); // result is Started!
+      });
+
+
+      /*
+    	var bodyEl = document.body;
+			var avatarEl = document.getElementById('avatar');
+			var authorizeEl = document.getElementById('authorize');
+			authorizeEl.addEventListener('click', authorize);
+			Homey.setTitle(__('pair.login'));
+			Homey.emit('authorized', function (err, result) {
+				if (err) {
+					setAuthorizationState(false);
+				} else {
+					setAuthorizationState(result);
+				}
+			});
+			Homey.on('authorized', setAuthorizationState);
+			function authorize() {
+				Homey.emit('oauth2', function (err, url) {
+					if (err) {
+						console.log('authorize err', err);
+						return error(__('settings.error.invalid_credentials'));
+					}
+					Homey.popup(url);
+				});
+			}
+			function setAuthorizationState(authorized) {
+				bodyEl.classList.toggle('authorized', authorized);
+				if (authorized) {
+					Homey.setTitle(__('pair.loading'));
+					Homey.showView('list_devices');
+				} else {
+					avatarEl.style.backgroundImage = 'url(img/default.png)';
+					avatarEl.href = 'javascript:void(0);';
+				}
+			}
+      */
+			function error(err) {
+				Homey.alert(err.message || err.toString(), 'error');
+			}
+	  </script>
+
+</html>
